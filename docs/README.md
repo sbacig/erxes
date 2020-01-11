@@ -11,4 +11,3 @@
 ```sh
 GIT_USER='git username' CURRENT_BRANCH=master USE_SSH=true yarn run publish-gh-pages
 ```
-1
