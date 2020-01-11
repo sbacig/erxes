@@ -35,7 +35,7 @@ ui_build:
     - docker build -t erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME} -f Dockerfile .
     - docker push erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME}
   dependencies:
-    - test
+    - ui_test
   only:
     refs:
       - master
