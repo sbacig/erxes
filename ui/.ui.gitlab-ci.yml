@@ -30,7 +30,7 @@ test:
   #     - ui/build/
 
 docs:
-  stage: build
+  stage: test
   image: node:10.16-alpine
   # before_script:
   #   - cd ui
