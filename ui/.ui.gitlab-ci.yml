@@ -1,63 +1,43 @@
-test:
+ui_test:
   stage: test
   image: node:10.16-alpine
-  # before_script:
-  #   - cd ui
-  #   - yarn install
-  #   - apk add --no-cache --update git
-  #   - git checkout ${CI_COMMIT_REF_SLUG}
+  before_script:
+    - cd ui
+    - yarn install
+    - apk add --no-cache --update git
+    - git checkout ${CI_COMMIT_REF_SLUG}
   script:
-    - echo "ui is updated"
-    # - yarn lint
-    # - yarn tsc
-    # - yarn build
+    - yarn lint
+    - yarn tsc
+    - yarn build
   rules:
     - changes:
         - ui/**/*
-#   only:
-#     refs:
-#       - master
-#       - develop
-#   # cache:
-#   #   key:
-#   #     files:
-#   #       - ui/package.json
-#   #   paths:
-#   #     - ui/node_modules/
-  # artifacts:
-  #   expire_in: 1h
-  #   paths:
-  #     - ui/build/
+  cache:
+    key:
+      files:
+        - ui/package.json
+    paths:
+      - ui/node_modules/
+  artifacts:
+    expire_in: 1h
+    paths:
+      - ui/build/
 
-docs:
-  stage: test
-  image: node:10.16-alpine
-  # before_script:
-  #   - cd ui
-  #   - yarn install
-  #   - apk add --no-cache --update git
-  #   - git checkout ${CI_COMMIT_REF_SLUG}
+ui_build:
+  stage: build
+  needs:
+    - ui_test
+  before_script:
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
-    - echo "doc is updated"
-    # - yarn lint
-    # - yarn tsc
-    # - yarn build
-  rules:
-    - changes:
-        - docs/**/*
-
-# build:
-#   stage: build
-#   before_script:
-#     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-#   script:
-#     - cd ui
-#     - docker build -t erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME} -f Dockerfile .
-#     - docker push erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME}
-#   dependencies:
-#     - test
-#   only:
-#     refs:
-#       - master
-#       - develop
-#       - apm
+    - cd ui
+    - docker build -t erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME} -f Dockerfile .
+    - docker push erxes/$CI_PROJECT_NAME:${CI_COMMIT_REF_NAME}
+  dependencies:
+    - test
+  only:
+    refs:
+      - master
+      - develop
+      - apm
