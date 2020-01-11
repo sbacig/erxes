@@ -8,7 +8,7 @@ default:
 
 stages:
   - test
-  # - build
+  - build
 
 include:
 - local: '/ui/.ui.gitlab-ci.yml'

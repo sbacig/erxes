@@ -29,6 +29,23 @@ test:
   #   paths:
   #     - ui/build/
 
+docs:
+  stage: build
+  image: node:10.16-alpine
+  # before_script:
+  #   - cd ui
+  #   - yarn install
+  #   - apk add --no-cache --update git
+  #   - git checkout ${CI_COMMIT_REF_SLUG}
+  script:
+    - echo "doc is updated"
+    # - yarn lint
+    # - yarn tsc
+    # - yarn build
+  rules:
+    - changes:
+        - docs/**/*
+
 # build:
 #   stage: build
 #   before_script:
