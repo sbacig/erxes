@@ -1,6 +1,6 @@
 docs:
   stage: test
-  image: node:10.16-alpine
+  image: node:10.16-slim
   before_script:
     - cd docs/website
     - yarn install
